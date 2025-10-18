@@ -2,11 +2,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_pass/core/localization/app_localizations.dart';
 import 'package:pet_pass/core/utiles/app_colors.dart';
 import 'package:pet_pass/core/utiles/styles.dart';
 
 class PaymentContainer extends StatelessWidget {
-  const PaymentContainer({super.key});
+  const PaymentContainer({
+    super.key,
+    required this.planName,
+    required this.price,
+    required this.features,
+    required this.onTap,
+  });
+
+  final String planName; // مثال: "MONTHLY PLAN"
+  final String price; // مثال: "\$9.99/month"
+  final List<String> features; // قائمة المميزات
+  final VoidCallback onTap; // الإجراء عند الضغط
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +26,6 @@ class PaymentContainer extends StatelessWidget {
 
     return Stack(
       children: [
-        // Container
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           padding: EdgeInsets.all(20.w),
@@ -37,47 +48,24 @@ class PaymentContainer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "📅 MONTHLY PLAN",
-                        style: Styles.textStyle12.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      SizedBox(height: 4.h),
-                      Text(
-                        "\$9.99/month",
-                        style: Styles.textStyle24.copyWith(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "📅 $planName",
+                    style: Styles.textStyle12.copyWith(
+                      fontSize: 12.sp,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                    ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.w,
-                      vertical: 4.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Text(
-                      "Save 17%",
-                      style: Styles.textStyle12.copyWith(
-                        fontSize: 11.sp,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    price,
+                    style: Styles.textStyle24.copyWith(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],
@@ -94,13 +82,12 @@ class PaymentContainer extends StatelessWidget {
               SizedBox(height: 16.h),
 
               // Features
-              _buildFeature("✓ Extra 10% Discount", isDark),
-              SizedBox(height: 12.h),
-              _buildFeature("✓ Early Access to Offers", isDark),
-              SizedBox(height: 12.h),
-              _buildFeature("✓ Premium Support", isDark),
-              SizedBox(height: 12.h),
-              _buildFeature("✓ Exclusive Deals", isDark),
+              ...features.map(
+                (f) => Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: _buildFeature("✓ $f", isDark),
+                ),
+              ),
 
               SizedBox(height: 24.h),
 
@@ -124,15 +111,13 @@ class PaymentContainer extends StatelessWidget {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      onTap: () {
-                        // Subscribe action
-                      },
+                      onTap: onTap,
                       borderRadius: BorderRadius.circular(12.r),
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 14.h),
                         child: Center(
                           child: Text(
-                            "SUBSCRIBE NOW",
+                            AppLocalizations.of(context)!.buutonsub,
                             style: Styles.textStyle14.copyWith(
                               fontSize: 14.sp,
                               color: Colors.white,

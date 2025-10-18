@@ -17,10 +17,30 @@ class PremiumViewBody extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
-            CenteredTitle(title: lang.premium),
+            CenteredTitle(title: lang.selectPlan),
             SizedBox(height: 19.h),
-            const PaymentContainer(),
+            PaymentContainer(
+              planName: lang.monthly,
+              price: lang.monthlyPay,
+              features: [
+                lang.monthlyDesc,
+                lang.monthlyFeature1,
 
+                lang.monthlyFeature2,
+              ],
+              onTap: () {},
+            ),
+            SizedBox(height: 16.h),
+            PaymentContainer(
+              planName: lang.yearly,
+              price: lang.yearlyPay,
+              features: [
+                lang.yearlyDesc,
+                lang.yearlyFeature1,
+                lang.yearlyFeature2,
+              ],
+              onTap: () {},
+            ),
             SizedBox(height: 16.h),
           ],
         ),

@@ -34,7 +34,7 @@ class CustomItemImage extends StatelessWidget {
         aspectRatio: 2.6.w / 4.h,
         child: CachedNetworkImage(
           imageUrl: imageURL,
-          fit: BoxFit.contain,
+          fit: BoxFit.fill,
           placeholder: (context, url) => const CustomLoadingIndicator(),
           errorWidget:
               (context, url, error) => Container(

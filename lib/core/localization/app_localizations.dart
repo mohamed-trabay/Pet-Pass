@@ -138,8 +138,18 @@ class AppLocalizations {
       'premium_benefit4': 'Ad-free browsing experience',
       'premium_benefit5': 'Priority customer support',
       'subscribe_now': 'Subscribe Now',
-      'monthly': 'Monthly',
-      'yearly': 'Yearly',
+      'monthly': 'Monthly plan',
+      'yearly': 'Yearly plan',
+      'monthly pay': 'AED 29',
+      'yearly pay': ' AED 290',
+      'monthly desc': 'Billed monthly. Cancel anytime.',
+      'yearly desc': 'Billed yearly. Save 20%.',
+      'monthly feature1': 'Early Access to Offers',
+      'yearly feature1': 'Exclusive Yearly Offers',
+      'monthly feature2': 'Premium Support',
+      'yearly feature2': 'Priority Support',
+      'buutonsub': 'Subscribe Now',
+
       'select_plan': 'Select a plan',
       'already_subscribed': 'You are already subscribed to Premium',
       'subscribe': 'Subscribe',
@@ -328,6 +338,16 @@ class AppLocalizations {
       'subscribe_now': 'اشترك الآن',
       'monthly': 'شهري',
       'yearly': 'سنوي',
+      'monthly pay': '29 درهم',
+      'yearly pay': ' 290 درهم',
+      'monthly desc': 'يتم الفوترة شهريًا. يمكنك الإلغاء في أي وقت.',
+      'yearly desc': 'يتم الفوترة سنويًا. وفر 20٪.',
+      'monthly feature1': 'الوصول المبكر إلى العروض',
+      'yearly feature1': 'عروض حصرية سنوية',
+      'monthly feature2': 'دعم بريميوم',
+      'yearly feature2': 'دعم ذو أولوية',
+      'buutonsub': 'اشترك الآن',
+
       'select_plan': 'اختر خطة',
       'already_subscribed': 'أنت مشترك بالفعل في بريميوم',
       'subscribe': 'اشترك',
@@ -523,6 +543,16 @@ class AppLocalizations {
   String get subscribeNow => translate('subscribe_now');
   String get monthly => translate('monthly');
   String get yearly => translate('yearly');
+  String get monthlyPay => translate('monthly pay');
+  String get yearlyPay => translate('yearly pay');
+  String get monthlyDesc => translate('monthly desc');
+  String get yearlyDesc => translate('yearly desc');
+  String get monthlyFeature1 => translate('monthly feature1');
+  String get yearlyFeature1 => translate('yearly feature1');
+  String get monthlyFeature2 => translate('monthly feature2');
+  String get yearlyFeature2 => translate('yearly feature2');
+  String get buutonsub => translate('buutonsub');
+
   String get selectPlan => translate('select_plan');
   String get alreadySubscribed => translate('already_subscribed');
   String get subscribe => translate('subscribe');
