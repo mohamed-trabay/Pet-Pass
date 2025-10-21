@@ -29,6 +29,6 @@ class LanguageCubit extends Cubit<LanguageState> {
     if (state is LanguageChanged) {
       return (state as LanguageChanged).locale.languageCode;
     }
-    return 'ar';
+    return 'en';
   }
 }

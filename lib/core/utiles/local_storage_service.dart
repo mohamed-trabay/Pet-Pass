@@ -178,7 +178,7 @@ class LocalStorageService {
   static Future<String> loadLanguage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.getString(_languageKey) ?? 'ar';
+      return prefs.getString(_languageKey) ?? 'en';
     } catch (e) {
       debugPrint('Error loading language: $e');
       return 'ar';

@@ -1,63 +1,60 @@
 class UserModel {
-  final String firstName;
-  final String lastName;
+  final int id;
+  final String username;
   final String email;
-  final String phone;
-  final String whatsapp;
-  final String address;
-  final String country;
-  final String city;
-  final String street;
-  final String building;
-  final String apartment;
-  final String floor;
-
+  final String? name;
+  final String? firstName;
+  final String? lastName;
+  final String? role;
+  final String? avatarUrl;
+  final String plan;
+  final DateTime? registeredDate;
   UserModel({
-    required this.firstName,
-    required this.lastName,
+    required this.id,
+    required this.username,
     required this.email,
-    required this.phone,
-    required this.whatsapp,
-    required this.address,
-    required this.country,
-    required this.city,
-    required this.street,
-    required this.building,
-    required this.apartment,
-    required this.floor,
+    this.name,
+    this.firstName,
+    this.lastName,
+    this.role,
+    this.avatarUrl,
+    required this.plan,
+    this.registeredDate,
   });
 
-  Map<String, String> toMap() {
-    return {
-      'firstName': firstName,
-      'lastName': lastName,
-      'email': email,
-      'phone': phone,
-      'whatsapp': whatsapp,
-      'address': address,
-      'country': country,
-      'city': city,
-      'street': street,
-      'building': building,
-      'apartment': apartment,
-      'floor': floor,
-    };
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'] ?? 0,
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      name: json['name'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
+      role:
+          (json['roles'] != null && json['roles'].isNotEmpty)
+              ? json['roles'][0]
+              : null,
+      avatarUrl: json['avatar_urls'] != null ? json['avatar_urls']['96'] : null,
+      plan: json['plan'] ?? 'not subscribed',
+      registeredDate:
+          json['registered_date'] != null
+              ? DateTime.tryParse(json['registered_date'])
+              : null,
+    );
   }
 
-  factory UserModel.fromMap(Map<String, String> map) {
-    return UserModel(
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
-      email: map['email'] ?? '',
-      phone: map['phone'] ?? '',
-      whatsapp: map['whatsapp'] ?? '',
-      address: map['address'] ?? '',
-      country: map['country'] ?? '',
-      city: map['city'] ?? '',
-      street: map['street'] ?? '',
-      building: map['building'] ?? '',
-      apartment: map['apartment'] ?? '',
-      floor: map['floor'] ?? '',
-    );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'username': username,
+      'email': email,
+      'name': name,
+      'first_name': firstName,
+      'last_name': lastName,
+      'role': role,
+      'avatar_url': avatarUrl,
+      'plan': plan,
+      'registered_date': registeredDate?.toIso8601String(),
+    };
   }
 }

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:pet_pass/core/errors/failures.dart';
-import 'package:pet_pass/core/utiles/api_service.dart';
+import 'package:pet_pass/core/services/api_service.dart';
 import 'package:pet_pass/features/home/data/models/category_model.dart';
 import 'package:pet_pass/features/deals/data/repo/deals_repo.dart';
 import 'package:pet_pass/features/home/data/models/product_model/offer_model.dart';

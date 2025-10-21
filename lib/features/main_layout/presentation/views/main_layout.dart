@@ -30,6 +30,7 @@ class _MainLayoutState extends State<MainLayout> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _currentIndex);
+
     context.read<FavCubit>().loadFavorites();
   }
 

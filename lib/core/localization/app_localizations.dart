@@ -48,6 +48,33 @@ class AppLocalizations {
       'email_already_in_use': 'Email already in use',
       'invalid_eemail': 'Invalid email',
       'account_created': 'Account created successfully',
+      "loginSuccess": "Login successful!",
+      "loading": "Loading...",
+      "pleaseEnterEmail": "Please enter your email",
+      "pleaseEnterPassword": "Please enter your password",
+      "pleaseEnterUsername": "Please enter your username",
+      "pleaseConfirmPassword": "Please confirm your password",
+      "pleaseEnterCode": "Please enter verification code",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "usernameTooShort": "Username must be at least 3 characters",
+      "invalidEmail": "Invalid email address",
+      "passwordsDoNotMatch": "Passwords do not match",
+
+      "accountCreated": "Account created successfully!",
+      "codeSentToEmail": "Verification code sent to your email",
+      "codeSentTo": "Code sent to",
+      "codeVerified": "Code verified successfully",
+      "passwordResetSuccess": "Password reset successful",
+
+      "sendResetLink": "Send Reset Code",
+      "backToLogin": "Back to Login",
+      "enterVerificationCode": "Enter Verification Code",
+      "verificationCode": "Verification Code",
+      "resendCode": "Resend Code",
+      "verify": "Verify",
+      "createNewPassword": "Create New Password",
+      "newPassword": "New Password",
+      "resetPassword": "Reset Password",
 
       // Home
       'banner1': 'Get Exclusive',
@@ -245,6 +272,31 @@ class AppLocalizations {
       'email_already_in_use': 'البريد الإلكتروني مستخدم بالفعل',
       'invalid_eemail': 'البريد الإلكتروني غير صالح',
       'account_created': 'تم إنشاء الحساب بنجاح',
+      "loginSuccess": "Login successful!",
+      "loading": "يتم التحميل...",
+      "pleaseEnterEmail": "الرجاء إدخال البريد الإلكتروني",
+      "pleaseEnterPassword": "الرجاء إدخال كلمة المرور",
+      "pleaseEnterUsername": "الرجاء إدخال اسم المستخدم",
+      "pleaseConfirmPassword": "الرجاء تأكيد كلمة المرور",
+      "pleaseEnterCode": "الرجاء إدخال رمز التحقق",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "usernameTooShort": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+      "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
+      "passwordsDoNotMatch": "كلمات المرور غير متطابقة",
+      "accountCreated": "تم إنشاء الحساب بنجاح!",
+      "codeSentToEmail": "تم إرسال رمز التحقق إلى بريدك الإلكتروني",
+      "codeSentTo": "تم إرسال الرمز إلى",
+      "codeVerified": "تم التحقق من الرمز بنجاح",
+      "passwordResetSuccess": "تم إعادة تعيين كلمة المرور بنجاح",
+      "sendResetLink": "إرسال رمز إعادة التعيين",
+      "backToLogin": "العودة إلى تسجيل الدخول",
+      "enterVerificationCode": "أدخل رمز التحقق",
+      "verificationCode": "رمز التحقق",
+      "resendCode": "إعادة إرسال الرمز",
+      "verify": "تحقق",
+      "createNewPassword": "إنشاء كلمة مرور جديدة",
+      "newPassword": "كلمة المرور الجديدة",
+      "resetPassword": "إعادة تعيين كلمة المرور",
 
       // Home
       'banner1': 'احصل حصرياً على',
@@ -451,6 +503,29 @@ class AppLocalizations {
   String get emailAlreadyInUse => translate('email_already_in_use');
   String get invalidEmail => translate('invalid_eemail');
   String get accountCreated => translate('account_created');
+  String get loginSuccess => translate('loginSuccess');
+  String get loading => translate('loading');
+  String get pleaseEnterEmail => translate('pleaseEnterEmail');
+  String get pleaseEnterPassword => translate('pleaseEnterPassword');
+  String get pleaseEnterUsername => translate('pleaseEnterUsername');
+  String get pleaseConfirmPassword => translate('pleaseConfirmPassword');
+  String get pleaseEnterCode => translate('pleaseEnterCode');
+  String get passwordTooShort => translate('passwordTooShort');
+  String get usernameTooShort => translate('usernameTooShort');
+  String get passwordsDoNotMatch => translate('passwordsDoNotMatch');
+  String get codeSentToEmail => translate('codeSentToEmail');
+  String get codeSentTo => translate('codeSentTo');
+  String get codeVerified => translate('codeVerified');
+  String get passwordResetSuccess => translate('passwordResetSuccess');
+  String get sendResetLink => translate('sendResetLink');
+  String get backToLogin => translate('backToLogin');
+  String get enterVerificationCode => translate('enterVerificationCode');
+  String get verificationCode => translate('verificationCode');
+  String get resendCode => translate('resendCode');
+  String get verify => translate('verify');
+  String get createNewPassword => translate('createNewPassword');
+  String get newPassword => translate('newPassword');
+  String get resetPassword => translate('resetPassword');
 
   // Home
   String get banner1 => translate('banner1');
@@ -492,6 +567,8 @@ class AppLocalizations {
 
   String get bottom_header =>
       translate('bottom_header'); // كيفية الحصول على العرض
+
+  //auth
 
   // Category
   String get category1 => translate('category1');

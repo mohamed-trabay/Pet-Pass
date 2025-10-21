@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
-import 'package:pet_pass/core/utiles/app_colors.dart';
 import 'package:pet_pass/core/utiles/app_router.dart';
-import 'package:pet_pass/core/utiles/assets.dart';
-import 'package:pet_pass/core/utiles/styles.dart';
+
 import 'package:pet_pass/core/widgets/custom_app_bar.dart';
+
+import 'package:pet_pass/features/profiel/presentation/views/widgets/custom_profiel_item.dart';
+import 'package:pet_pass/features/profiel/presentation/views/widgets/logout_dialog.dart';
+import 'package:pet_pass/features/profiel/presentation/views/widgets/profile_header.dart';
 
 class ProfielViewBody extends StatelessWidget {
   const ProfielViewBody({super.key});
@@ -20,110 +22,49 @@ class ProfielViewBody extends StatelessWidget {
       children: [
         CustomAppBar(title: lang.profile),
         SizedBox(height: 10.h),
-        _buildProfileHeader(context),
+        const ProfileHeader(),
         const Divider(
           thickness: 1,
           color: Colors.grey,
           endIndent: 20,
           indent: 20,
         ),
-        CustomDrawerItem(
-          icon: Icons.shopping_bag_outlined,
-          title: lang.pastOrders,
+        CustomProfielItem(
+          icon: Icons.handshake_outlined,
+          title: 'Become a partner',
           onTap: () => Navigator.pop(context),
         ),
-        CustomDrawerItem(
-          icon: Icons.replay_outlined,
-          title: lang.refund,
-          onTap: () {},
-        ),
-        CustomDrawerItem(
+        CustomProfielItem(
           icon: Icons.settings_outlined,
           title: lang.settings,
           onTap: () {
             GoRouter.of(context).push(AppRouter.ksettingsView);
           },
         ),
-        CustomDrawerItem(
+        CustomProfielItem(
           icon: Icons.privacy_tip_outlined,
           title: lang.privacy,
           onTap: () {},
         ),
-        CustomDrawerItem(
-          icon: Icons.description_outlined,
-          title: lang.terms,
+        CustomProfielItem(
+          icon: Icons.help_outline,
+          title: 'How it works',
           onTap: () {},
         ),
-        CustomDrawerItem(
-          icon: Icons.info_outline,
-          title: lang.aboutUs,
+        CustomProfielItem(
+          icon: Icons.group_outlined,
+          title: 'Founding members',
           onTap: () {},
+        ),
+        Divider(thickness: 1.h, color: Colors.grey[300]),
+        ListTile(
+          leading: const Icon(Icons.logout_outlined, color: Colors.red),
+          title: Text(lang.logout, style: const TextStyle(color: Colors.red)),
+          onTap: () {
+            showLogoutDialog(context);
+          },
         ),
       ],
-    );
-  }
-
-  Widget _buildProfileHeader(BuildContext context) {
-    final lang = AppLocalizations.of(context)!;
-
-    return Container(
-      padding: EdgeInsets.all(16.r),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 60.w,
-            height: 60.h,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: const Image(
-                fit: BoxFit.cover,
-                image: AssetImage(AssetsData.profielUser),
-              ),
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  lang.userName,
-                  style: Styles.textStyle18.copyWith(color: Colors.grey),
-                ),
-                Text(
-                  'User@gmail.com',
-                  style: Styles.textStyle14.copyWith(
-                    color: AppColors.greyprimmary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomDrawerItem extends StatelessWidget {
-  const CustomDrawerItem({
-    super.key,
-    required this.icon,
-    required this.title,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap,
     );
   }
 }

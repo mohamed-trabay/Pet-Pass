@@ -10,6 +10,9 @@ class AuthTextField extends StatelessWidget {
     required this.onChanged,
     required this.keyboardType,
     required this.obscureText,
+    this.controller,
+    this.enabled,
+    this.validator, // ✅ إضافة validator مخصص
   });
 
   final String hintText;
@@ -17,6 +20,9 @@ class AuthTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final bool obscureText;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
+  final bool? enabled;
+  final String? Function(String?)? validator; // ✅ validator مخصص
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +30,58 @@ class AuthTextField extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return TextFormField(
+      enabled: enabled ?? true,
+      controller: controller,
       onChanged: onChanged,
       obscureText: obscureText,
       autocorrect: !obscureText,
       enableSuggestions: !obscureText,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter $hintText';
-        }
-        return null;
-      },
+      validator: validator, // ✅ استخدام الـ validator المخصص
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
-        prefixIcon: Icon(icon, color: colorScheme.onSurface),
+        hintStyle: TextStyle(color: colorScheme.onSurface.withOpacity(0.5)),
+        prefixIcon: Icon(icon, color: colorScheme.onSurface.withOpacity(0.7)),
         filled: true,
         fillColor: colorScheme.surface.withOpacity(0.1),
+
+        // ✅ Border عادي
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: colorScheme.onSurface, width: 1),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.3),
+            width: 1,
+          ),
         ),
+
+        // ✅ Border عند Focus
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
+
+        // ✅ Border عند الخطأ
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red, width: 1),
+        ),
+
+        // ✅ Border عند الخطأ مع Focus
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red, width: 2),
+        ),
+
+        // ✅ Border عند التعطيل
+        disabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+
+        // ✅ تخصيص شكل رسالة الخطأ
+        errorStyle: const TextStyle(fontSize: 12, height: 0.8),
       ),
       style: TextStyle(color: colorScheme.onSurface),
       keyboardType: keyboardType,

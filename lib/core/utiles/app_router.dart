@@ -9,6 +9,7 @@ import 'package:pet_pass/features/home/presentation/viwes/home_view.dart';
 import 'package:pet_pass/features/home/presentation/viwes/item_details_view.dart';
 import 'package:pet_pass/features/home/presentation/viwes/newest_items_view.dart';
 import 'package:pet_pass/features/main_layout/presentation/views/main_layout.dart';
+import 'package:pet_pass/features/premium/presentaion/views/premium_view.dart';
 import 'package:pet_pass/features/search/presentation/views/search_view.dart';
 import 'package:pet_pass/features/splash/presentation/views/splash_view.dart';
 import 'package:pet_pass/features/deals/presentation/view/deals_view.dart';
@@ -91,13 +92,11 @@ abstract class AppRouter {
       //     return PaymentPage(amount: amount, orderId: orderId, iframeUrl: '');
       //   },
       // ),
+      GoRoute(path: ksignInView, builder: (context, state) => LoginScreen()),
+      GoRoute(path: ksignUpView, builder: (context, state) => SignUpScreen()),
       GoRoute(
-        path: ksignInView,
-        builder: (context, state) => const LoginScreen(),
-      ),
-      GoRoute(
-        path: ksignUpView,
-        builder: (context, state) => const SignUpScreen(),
+        path: kPaymentsView,
+        builder: (context, state) => const PremiumView(),
       ),
       GoRoute(
         path: kForgetPassword,

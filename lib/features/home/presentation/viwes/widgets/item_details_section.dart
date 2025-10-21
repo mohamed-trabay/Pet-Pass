@@ -6,6 +6,7 @@ import 'package:pet_pass/core/widgets/expandable_html.dart';
 import 'package:pet_pass/features/home/data/models/product_model/offer_model.dart';
 import 'package:pet_pass/features/home/presentation/viwes/widgets/custom_buttom.dart';
 import 'package:pet_pass/features/home/presentation/viwes/widgets/item_details/describ_column.dart';
+import 'package:pet_pass/features/home/presentation/viwes/widgets/item_details/show_dialog.dart';
 
 class ItemDetailsSection extends StatefulWidget {
   const ItemDetailsSection({super.key, required this.products});
@@ -49,7 +50,9 @@ class _ItemDetailsSectionState extends State<ItemDetailsSection> {
           height: 50.h,
           width: 200.w,
           title: lang.reedem,
-          onPressed: () {},
+          onPressed: () {
+            showDiscountDialog(context, widget, lang);
+          },
         ),
         SizedBox(height: 20.h),
         DescribColumn(products: widget.products),

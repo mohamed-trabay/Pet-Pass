@@ -6,6 +6,6 @@ class ProfielView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SafeArea(child: ProfielViewBody()));
+    return Scaffold(body: SafeArea(child: ProfielViewBody()));
   }
 }

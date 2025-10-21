@@ -26,7 +26,7 @@ class ItemDetailsImage extends StatelessWidget {
 
     if (validImages.isEmpty) {
       return SizedBox(
-        height: 400.h,
+        height: 350.h,
         width: double.infinity,
         child: Stack(
           children: [
@@ -62,7 +62,7 @@ class ItemDetailsImage extends StatelessWidget {
     return Stack(
       children: [
         SizedBox(
-          height: 400.h,
+          height: 350.h,
           width: double.infinity,
           child: CarouselSlider(
             items:
@@ -70,7 +70,8 @@ class ItemDetailsImage extends StatelessWidget {
                     .map((imageURL) => CustomItemImage(imageURL: imageURL))
                     .toList(),
             options: CarouselOptions(
-              height: 400.h,
+              height: 350.h,
+
               viewportFraction: 1,
               initialPage: 0,
               enlargeCenterPage: true,

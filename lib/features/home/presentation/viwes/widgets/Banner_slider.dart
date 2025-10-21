@@ -3,8 +3,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
 import 'package:pet_pass/core/utiles/app_colors.dart';
+import 'package:pet_pass/core/utiles/app_router.dart';
 import 'package:pet_pass/core/utiles/assets.dart';
 import 'package:pet_pass/core/utiles/styles.dart';
 import 'package:pet_pass/features/home/presentation/viwes/widgets/custom_banner.dart';
@@ -119,7 +121,9 @@ class BannerSlider extends StatelessWidget {
                     color: Colors.white,
                     height: 35.h,
                     title: lang.banner11Button,
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).push(AppRouter.kPaymentsView);
+                    },
                   ),
                 ],
               ),

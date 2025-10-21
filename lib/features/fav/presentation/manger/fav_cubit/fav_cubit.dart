@@ -47,4 +47,9 @@ class FavCubit extends Cubit<FavState> {
     }
     return false;
   }
+
+  Future<void> clearFavorites() async {
+    await LocalStorageService.saveFavorites([]);
+    emit(const FavoritesSuccess([]));
+  }
 }
