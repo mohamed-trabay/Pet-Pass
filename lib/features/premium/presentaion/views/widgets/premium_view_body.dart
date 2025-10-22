@@ -32,26 +32,28 @@ class PremiumViewBody extends StatelessWidget {
             bool isYearly = user.role == 'pms_subscription_plan_3080';
 
             if (isMonthly || isYearly) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.verified, color: Colors.green, size: 60.r),
-                  SizedBox(height: 12.h),
-                  Text(
-                    'You are subscribed to the ${isMonthly ? "Monthly" : "Yearly"} plan',
-                    style: Styles.textStyle18.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.verified, color: Colors.green, size: 60.r),
+                    SizedBox(height: 12.h),
+                    Text(
+                      'You are subscribed to the ${isMonthly ? "Monthly" : "Yearly"} plan',
+                      style: Styles.textStyle18.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    'Subscription since: $formattedDate',
-                    style: Styles.textStyle14.copyWith(
-                      color: AppColors.greyprimmary,
+                    SizedBox(height: 8.h),
+                    Text(
+                      'Subscription since: $formattedDate',
+                      style: Styles.textStyle14.copyWith(
+                        color: AppColors.greyprimmary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               );
             } else {
               return PlansBuild(context: context, lang: lang);

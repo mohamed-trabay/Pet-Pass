@@ -64,7 +64,7 @@ class CustomBannerColumn extends StatelessWidget {
             ),
             SizedBox(height: 20.h),
             const AnimatedImageWidget(imagePath: AssetsData.bottommain),
-            SizedBox(height: 31.h),
+            SizedBox(height: 30.h),
           ],
         ),
       ),
