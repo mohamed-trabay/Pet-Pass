@@ -19,6 +19,10 @@ abstract class AuthRepo {
     required String email,
     required String code,
   });
+  Future<Either<String, bool>> updateUserRole({
+    required String userId,
+    required String role,
+  });
 
   Future<Either<String, bool>> setNewPassword({
     required String email,

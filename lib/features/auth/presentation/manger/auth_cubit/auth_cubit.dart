@@ -23,16 +23,11 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     result.fold((error) => emit(AuthFailure(error)), (data) async {
-      // اعمل emit للـ AuthSuccess عشان الـ UI يعمل navigation
       emit(AuthSuccess(data));
 
-      // بعدين جيب الـ profile في الخلفية
       final profileResult = await _authRepo.getUserProfile();
 
-      profileResult.fold(
-        (error) {}, // ignore error here
-        (profile) => emit(ProfileLoaded(profile)),
-      );
+      profileResult.fold((error) {}, (profile) => emit(ProfileLoaded(profile)));
     });
   }
 
@@ -54,6 +49,26 @@ class AuthCubit extends Cubit<AuthState> {
       (error) => emit(AuthFailure(error)),
       (data) => emit(AuthSuccess(data)),
     );
+  }
+
+  // ===== UPDATE USER ROLE =====
+  Future<void> updateUserRole({
+    required String userId,
+    required String role,
+  }) async {
+    emit(AuthLoading());
+
+    final result = await _authRepo.updateUserRole(userId: userId, role: role);
+
+    result.fold((error) => emit(AuthFailure(error)), (_) async {
+      // بعد التحديث بنجاح، جيب الـ profile الجديد
+      final profileResult = await _authRepo.getUserProfile();
+
+      profileResult.fold(
+        (error) => emit(AuthFailure(error)),
+        (data) => emit(ProfileLoaded(data)),
+      );
+    });
   }
 
   // ===== RESET PASSWORD - STEP 1 =====
@@ -140,7 +155,6 @@ class AuthCubit extends Cubit<AuthState> {
     final isLoggedIn = await _authRepo.isLoggedIn();
 
     if (isLoggedIn) {
-      // لو المستخدم مسجل دخول، جيب الـ profile على طول
       final result = await _authRepo.getUserProfile();
 
       result.fold(

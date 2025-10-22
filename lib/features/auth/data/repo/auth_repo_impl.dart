@@ -181,4 +181,25 @@ class AuthRepoImpl implements AuthRepo {
       return {'email': null, 'nicename': null, 'display_name': null};
     }
   }
+
+  @override
+  Future<Either<String, bool>> updateUserRole({
+    required String userId,
+    required String role,
+  }) async {
+    try {
+      final result = await _authService.updateUserRole(
+        userId: userId,
+        role: role,
+      );
+
+      if (result['success'] == true) {
+        return const Right(true);
+      } else {
+        return Left(result['message'] ?? 'حدث خطأ غير معروف');
+      }
+    } catch (e) {
+      return Left('حدث خطأ غير متوقع: ${e.toString()}');
+    }
+  }
 }

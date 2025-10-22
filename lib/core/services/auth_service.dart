@@ -272,6 +272,41 @@ class AuthService {
     };
   }
 
+  // ===== UPDATE USER ROLE =====
+  // ===== UPDATE USER ROLE =====
+  Future<Map<String, dynamic>> updateUserRole({
+    required String userId,
+    required String role,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '$baseUrl/wp/v2/users/$userId',
+        data: {
+          'roles': [role],
+        },
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer ${ApiKeys.adminToken}', // ← استخدم admin token
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        return {'success': true, 'message': 'Role updated successfully'};
+      }
+
+      return {'success': false, 'message': 'Failed to update role'};
+    } on DioException catch (e) {
+      return {'success': false, 'message': _handleError(e)};
+    } catch (e) {
+      return {
+        'success': false,
+        'message': 'حدث خطأ غير متوقع: ${e.toString()}',
+      };
+    }
+  }
+
   // ===== HANDLE ERRORS =====
   String _handleError(DioException e) {
     if (e.type == DioExceptionType.connectionTimeout ||

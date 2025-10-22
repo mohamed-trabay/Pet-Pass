@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
 import 'package:pet_pass/core/widgets/center_title.dart';
+import 'package:pet_pass/features/premium/presentaion/manger/payment_manger.dart';
 import 'package:pet_pass/features/premium/presentaion/views/widgets/payment_container.dart';
 
 class PlansBuild extends StatelessWidget {
@@ -26,7 +27,9 @@ class PlansBuild extends StatelessWidget {
               lang.monthlyFeature1,
               lang.monthlyFeature2,
             ],
-            onTap: () {},
+            onTap: () {
+              PaymentManager.makePayment(context, 29, 'AED', 'monthly');
+            },
           ),
           SizedBox(height: 16.h),
           PaymentContainer(
@@ -37,7 +40,9 @@ class PlansBuild extends StatelessWidget {
               lang.yearlyFeature1,
               lang.yearlyFeature2,
             ],
-            onTap: () {},
+            onTap: () {
+              PaymentManager.makePayment(context, 290, 'AED', 'yearly');
+            },
           ),
           SizedBox(height: 16.h),
         ],
