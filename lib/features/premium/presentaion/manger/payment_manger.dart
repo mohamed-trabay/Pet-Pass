@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:pet_pass/core/utiles/api_keys.dart';
 import 'package:pet_pass/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
+import 'package:pet_pass/features/auth/presentation/views/widgets/auth_snack_bar.dart';
 
 abstract class PaymentManager {
   static Future<void> makePayment(
@@ -23,22 +24,17 @@ abstract class PaymentManager {
       await _updateUserRole(context, planType);
 
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Payment successful! Your subscription is now active.',
-            ),
-            backgroundColor: Colors.green,
-          ),
+        showSnackbar(
+          context,
+          'Payment successful! Your subscription is now active.',
         );
       }
     } catch (error) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Payment failed: ${error.toString()}'),
-            backgroundColor: Colors.red,
-          ),
+        showSnackbar(
+          isError: true,
+          context,
+          'Payment failed: ${error.toString()}',
         );
       }
     }

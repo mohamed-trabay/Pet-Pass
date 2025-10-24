@@ -23,9 +23,7 @@ class PremiumViewBody extends StatelessWidget {
             final user = state.profile;
             final formattedDate =
                 user.registeredDate != null
-                    ? DateFormat(
-                      'dd MMM yyyy • hh:mm a',
-                    ).format(user.registeredDate!)
+                    ? DateFormat('dd MMM yyyy').format(user.registeredDate!)
                     : 'N/A';
 
             bool isMonthly = user.role == 'pms_subscription_plan_1902';

@@ -23,7 +23,6 @@ class ExpandableTextHtml extends StatefulWidget {
 
 class _ExpandableTextHtmlState extends State<ExpandableTextHtml> {
   bool isExpanded = false;
-
   @override
   Widget build(BuildContext context) {
     final description = widget.text;
@@ -41,13 +40,16 @@ class _ExpandableTextHtmlState extends State<ExpandableTextHtml> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AnimatedCrossFade(
+        AnimatedSize(
           duration: const Duration(milliseconds: 300),
-          crossFadeState:
-              isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-          firstChild: SizedBox(
-            height: widget.collapsedHeight.h,
+          curve: Curves.easeInOut,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight:
+                  isExpanded ? double.infinity : widget.collapsedHeight.h,
+            ),
             child: Html(
+              key: ValueKey('html_${description.hashCode}'), // ← unique key
               data: description,
               style: {
                 'body': Style(
@@ -57,16 +59,6 @@ class _ExpandableTextHtmlState extends State<ExpandableTextHtml> {
                 ),
               },
             ),
-          ),
-          secondChild: Html(
-            data: description,
-            style: {
-              'body': Style(
-                fontSize: FontSize(16),
-                fontWeight: FontWeight.w400,
-                margin: Margins.zero,
-              ),
-            },
           ),
         ),
         InkWell(

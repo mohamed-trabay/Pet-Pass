@@ -20,21 +20,21 @@ class ForgotPasswordCodeStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("أدخل كود التحقق", style: Styles.textStyle24),
+          Text("Enter Validation Code", style: Styles.textStyle24),
           SizedBox(height: 20.h),
           AuthTextField(
             controller: _codeController,
-            hintText: "الكود",
+            hintText: "code",
             icon: Icons.security,
             obscureText: false,
             enabled: !isLoading,
-            validator: (value) => value!.isEmpty ? "أدخل الكود" : null,
+            validator: (value) => value!.isEmpty ? "Enter Code" : null,
             onChanged: (String p1) {},
             keyboardType: TextInputType.text,
           ),
           SizedBox(height: 30.h),
           CustomButton(
-            title: "تحقق",
+            title: "Verify Code",
             onPressed:
                 isLoading
                     ? null

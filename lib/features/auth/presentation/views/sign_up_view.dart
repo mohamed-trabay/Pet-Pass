@@ -14,93 +14,104 @@ import 'package:pet_pass/features/auth/presentation/views/widgets/auth_backgroun
 import 'package:pet_pass/features/auth/presentation/views/widgets/loading_overlay.dart';
 import 'package:pet_pass/features/auth/presentation/views/widgets/sign_up_form.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool _hasNavigated = false;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final lang = AppLocalizations.of(context)!;
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
-          showSnackbar(context, lang.accountCreated);
-          GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+        if (state is AuthSuccess && !_hasNavigated) {
+          _hasNavigated = true;
+
+          Future.microtask(() {
+            if (mounted) {
+              context.go(AppRouter.kHomeView);
+              showSnackbar(context, lang.accountCreated, isError: false);
+            }
+          });
         } else if (state is AuthFailure) {
-          showSnackbar(context, state.message);
+          showSnackbar(context, state.message, isError: true);
         }
       },
-      builder: (context, state) {
-        final isLoading = state is AuthLoading;
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          final isLoading = state is AuthLoading;
 
-        return Scaffold(
-          body: Stack(
-            children: [
-              AuthBackground(isDark: isDark),
-              SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  children: [
-                    SizedBox(height: 60.h),
-                    const AppLogo(),
-                    SizedBox(height: 15.h),
-                    Text(
-                      lang.createYourAccount,
-                      style: Styles.textStyle24.copyWith(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
+          return Scaffold(
+            body: Stack(
+              children: [
+                AuthBackground(isDark: isDark),
+                SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 60.h),
+                      const AppLogo(),
+                      SizedBox(height: 15.h),
+                      Text(
+                        lang.createYourAccount,
+                        style: Styles.textStyle24.copyWith(
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      lang.signUp,
-                      style: Styles.textStyle14.copyWith(
-                        color: AppColors.greyprimmary,
+                      SizedBox(height: 8.h),
+                      Text(
+                        lang.signUp,
+                        style: Styles.textStyle14.copyWith(
+                          color: AppColors.greyprimmary,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 40.h),
-
-                    // ✳️ Sign Up Form
-                    const SignUpForm(),
-
-                    SizedBox(height: 30.h),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: lang.alreadyHaveAnAccount,
-                            style: Styles.textStyle12.copyWith(
-                              color: AppColors.greyprimmary,
+                      SizedBox(height: 40.h),
+                      const SignUpForm(),
+                      SizedBox(height: 30.h),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: lang.alreadyHaveAnAccount,
+                              style: Styles.textStyle12.copyWith(
+                                color: AppColors.greyprimmary,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: ' ${lang.signIn}',
-                            style: Styles.textStyle12.copyWith(
-                              color: AppColors.corePrimary,
-                              fontWeight: FontWeight.bold,
+                            TextSpan(
+                              text: ' ${lang.signIn}',
+                              style: Styles.textStyle12.copyWith(
+                                color: AppColors.corePrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      if (!isLoading) {
+                                        Navigator.of(context).pop();
+                                      }
+                                    },
                             ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    if (!isLoading) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 40.h),
-                  ],
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
                 ),
-              ),
-
-              if (isLoading) const LoadingOverlay(),
-            ],
-          ),
-        );
-      },
+                if (isLoading) const LoadingOverlay(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

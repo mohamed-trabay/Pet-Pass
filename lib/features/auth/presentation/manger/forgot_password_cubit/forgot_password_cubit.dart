@@ -1,10 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_pass/features/auth/data/repo/auth_repo.dart';
 import 'forgot_password_state.dart';
 
 class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
-  ForgotPasswordCubit() : super(ForgotPasswordInitial());
+  final AuthRepo _authRepo;
+
+  ForgotPasswordCubit(this._authRepo) : super(ForgotPasswordInitial());
 
   int currentStep = 0;
+  String? _email;
+  String? _code;
 
   void goNextStep() {
     if (currentStep < 2) {
@@ -20,23 +25,56 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     }
   }
 
-  void sendResetCode(String email) async {
+  Future<void> sendResetCode(String email) async {
     emit(ForgotPasswordLoading());
-    await Future.delayed(const Duration(seconds: 2));
-    emit(ResetCodeSent());
-    goNextStep();
+
+    _email = email;
+    final result = await _authRepo.resetPasswordSendEmail(email: email);
+
+    result.fold((error) => emit(ForgotPasswordError(error)), (_) {
+      emit(ResetCodeSent());
+      goNextStep();
+    });
   }
 
-  void verifyCode(String code) async {
+  Future<void> verifyCode(String code) async {
+    if (_email == null) {
+      emit(ForgotPasswordError('Email not found'));
+      return;
+    }
+
     emit(ForgotPasswordLoading());
-    await Future.delayed(const Duration(seconds: 2));
-    emit(CodeVerified());
-    goNextStep();
+
+    _code = code;
+
+    final result = await _authRepo.validateResetCode(
+      email: _email!,
+      code: code,
+    );
+
+    result.fold((error) => emit(ForgotPasswordError(error)), (_) {
+      emit(CodeVerified());
+      goNextStep();
+    });
   }
 
-  void setNewPassword(String newPassword) async {
+  Future<void> setNewPassword(String newPassword) async {
+    if (_email == null || _code == null) {
+      emit(ForgotPasswordError('Missing email or code'));
+      return;
+    }
+
     emit(ForgotPasswordLoading());
-    await Future.delayed(const Duration(seconds: 2));
-    emit(PasswordResetSuccess());
+
+    final result = await _authRepo.setNewPassword(
+      email: _email!,
+      code: _code!,
+      newPassword: newPassword,
+    );
+
+    result.fold(
+      (error) => emit(ForgotPasswordError(error)),
+      (_) => emit(PasswordResetSuccess()),
+    );
   }
 }

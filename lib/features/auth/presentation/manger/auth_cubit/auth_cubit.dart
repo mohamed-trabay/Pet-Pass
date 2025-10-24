@@ -10,7 +10,6 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepo) : super(AuthInitial());
 
   // ===== LOGIN =====
-  // ===== LOGIN =====
   Future<void> login({
     required String username,
     required String password,
@@ -45,10 +44,13 @@ class AuthCubit extends Cubit<AuthState> {
       password: password,
     );
 
-    result.fold(
-      (error) => emit(AuthFailure(error)),
-      (data) => emit(AuthSuccess(data)),
-    );
+    result.fold((error) => emit(AuthFailure(error)), (data) async {
+      // بعد نجاح التسجيل، emit AuthSuccess ثم اجلب الـ Profile
+      emit(AuthSuccess(data));
+
+      final profileResult = await _authRepo.getUserProfile();
+      profileResult.fold((error) {}, (profile) => emit(ProfileLoaded(profile)));
+    });
   }
 
   // ===== UPDATE USER ROLE =====
@@ -61,7 +63,6 @@ class AuthCubit extends Cubit<AuthState> {
     final result = await _authRepo.updateUserRole(userId: userId, role: role);
 
     result.fold((error) => emit(AuthFailure(error)), (_) async {
-      // بعد التحديث بنجاح، جيب الـ profile الجديد
       final profileResult = await _authRepo.getUserProfile();
 
       profileResult.fold(
@@ -118,7 +119,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  // ===== GET PROFILE =====
+  // ===== GET PROFILE =====ss
   Future<void> getUserProfile() async {
     emit(AuthLoading());
 

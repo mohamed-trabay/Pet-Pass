@@ -14,97 +14,104 @@ import 'package:pet_pass/features/auth/presentation/views/widgets/login_form.dar
 import 'package:pet_pass/features/auth/presentation/views/widgets/auth_background.dart';
 import 'package:pet_pass/features/auth/presentation/views/widgets/loading_overlay.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool _hasNavigated = false;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final lang = AppLocalizations.of(context)!;
 
-    return BlocConsumer<AuthCubit, AuthState>(
+    return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
-          showSnackbar(context, lang.loginSuccess);
-          GoRouter.of(context).pushReplacement(AppRouter.kHomeView);
+        if (state is AuthSuccess && !_hasNavigated) {
+          _hasNavigated = true;
+
+          Future.microtask(() {
+            if (mounted) {
+              context.pushReplacement(AppRouter.kHomeView);
+              showSnackbar(context, lang.loginSuccess, isError: false);
+            }
+          });
         } else if (state is AuthFailure) {
-          showSnackbar(context, state.message);
+          showSnackbar(context, state.message, isError: true);
         }
       },
-      builder: (context, state) {
-        final isLoading = state is AuthLoading;
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          final isLoading = state is AuthLoading;
 
-        return Scaffold(
-          body: Stack(
-            children: [
-              AuthBackground(isDark: isDark),
-
-              SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Column(
-                  children: [
-                    SizedBox(height: 60.h),
-                    const AppLogo(),
-                    SizedBox(height: 15.h),
-
-                    Text(
-                      lang.welcomeBack,
-                      style: Styles.textStyle24.copyWith(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
+          return Scaffold(
+            body: Stack(
+              children: [
+                AuthBackground(isDark: isDark),
+                SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 60.h),
+                      const AppLogo(),
+                      SizedBox(height: 15.h),
+                      Text(
+                        lang.welcomeBack,
+                        style: Styles.textStyle24.copyWith(
+                          fontSize: 28.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      lang.signInToContinue,
-                      style: Styles.textStyle14.copyWith(
-                        color: AppColors.greyprimmary,
+                      SizedBox(height: 8.h),
+                      Text(
+                        lang.signInToContinue,
+                        style: Styles.textStyle14.copyWith(
+                          color: AppColors.greyprimmary,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 40.h),
-
-                    // ✳️ Login Form
-                    const LoginForm(),
-
-                    SizedBox(height: 30.h),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: lang.dontHaveAnAccount,
-                            style: Styles.textStyle12.copyWith(
-                              color: AppColors.greyprimmary,
+                      SizedBox(height: 40.h),
+                      const LoginForm(),
+                      SizedBox(height: 30.h),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: lang.dontHaveAnAccount,
+                              style: Styles.textStyle12.copyWith(
+                                color: AppColors.greyprimmary,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: ' ${lang.signUp}',
-                            style: Styles.textStyle12.copyWith(
-                              color: AppColors.corePrimary,
-                              fontWeight: FontWeight.bold,
+                            TextSpan(
+                              text: ' ${lang.signUp}',
+                              style: Styles.textStyle12.copyWith(
+                                color: AppColors.corePrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      if (!isLoading) {
+                                        context.push(AppRouter.ksignUpView);
+                                      }
+                                    },
                             ),
-                            recognizer:
-                                TapGestureRecognizer()
-                                  ..onTap = () {
-                                    if (!isLoading) {
-                                      GoRouter.of(
-                                        context,
-                                      ).push(AppRouter.ksignUpView);
-                                    }
-                                  },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 40.h),
-                  ],
+                      SizedBox(height: 40.h),
+                    ],
+                  ),
                 ),
-              ),
-
-              if (isLoading) const LoadingOverlay(),
-            ],
-          ),
-        );
-      },
+                if (isLoading) const LoadingOverlay(),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

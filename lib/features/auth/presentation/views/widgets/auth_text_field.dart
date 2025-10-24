@@ -12,7 +12,7 @@ class AuthTextField extends StatelessWidget {
     required this.obscureText,
     this.controller,
     this.enabled,
-    this.validator, // ✅ إضافة validator مخصص
+    this.validator,
   });
 
   final String hintText;

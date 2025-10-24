@@ -20,22 +20,22 @@ class ForgotPasswordEmailStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("نسيت كلمة المرور", style: Styles.textStyle24),
+          Text("Forget Password", style: Styles.textStyle24),
           SizedBox(height: 20.h),
           AuthTextField(
             controller: _emailController,
-            hintText: "البريد الإلكتروني",
+            hintText: "Email",
             icon: Icons.email_outlined,
             obscureText: false,
             enabled: !isLoading,
             validator:
-                (value) => value!.isEmpty ? "أدخل البريد الإلكتروني" : null,
+                (value) => value!.isEmpty ? "Please enter your email" : null,
             onChanged: (String p1) {},
             keyboardType: TextInputType.emailAddress,
           ),
           SizedBox(height: 30.h),
           CustomButton(
-            title: "إرسال الكود",
+            title: "send code",
             onPressed:
                 isLoading
                     ? null

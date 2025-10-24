@@ -21,34 +21,34 @@ class ForgotPasswordNewPasswordStep extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("أدخل كلمة مرور جديدة", style: Styles.textStyle24),
+          Text("Enter new password", style: Styles.textStyle24),
           SizedBox(height: 20.h),
           AuthTextField(
             controller: _passwordController,
-            hintText: "كلمة المرور الجديدة",
+            hintText: "New Password",
             icon: Icons.lock_outline,
             obscureText: true,
-            validator: (v) => v!.length < 6 ? "كلمة المرور قصيرة جداً" : null,
+            validator: (v) => v!.length < 6 ? "password too short" : null,
             onChanged: (String p1) {},
             keyboardType: TextInputType.text,
           ),
           SizedBox(height: 16.h),
           AuthTextField(
             controller: _confirmController,
-            hintText: "تأكيد كلمة المرور",
+            hintText: "Confirm Password",
             icon: Icons.lock_outline,
             obscureText: true,
             validator:
                 (v) =>
                     v != _passwordController.text
-                        ? "كلمتا المرور غير متطابقتين"
+                        ? "Passwords do not match"
                         : null,
             onChanged: (String p1) {},
             keyboardType: TextInputType.text,
           ),
           SizedBox(height: 30.h),
           CustomButton(
-            title: "تغيير كلمة المرور",
+            title: "Set New Password",
             onPressed:
                 isLoading
                     ? null

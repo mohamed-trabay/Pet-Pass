@@ -19,14 +19,17 @@ class ForgotPasswordScreen extends StatelessWidget {
     return BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
       listener: (context, state) {
         if (state is ResetCodeSent) {
-          showSnackbar(context, "تم إرسال الكود إلى البريد الإلكتروني");
+          showSnackbar(context, "please check your email for the reset code");
         } else if (state is CodeVerified) {
-          showSnackbar(context, "تم التحقق من الكود بنجاح");
+          showSnackbar(
+            context,
+            "verification successful, please set a new password",
+          );
         } else if (state is PasswordResetSuccess) {
-          showSnackbar(context, "تم تغيير كلمة المرور بنجاح");
+          showSnackbar(context, "password reset successful");
           Navigator.pop(context);
         } else if (state is ForgotPasswordError) {
-          showSnackbar(context, state.message);
+          showSnackbar(context, state.message, isError: true);
         }
       },
       builder: (context, state) {
@@ -39,7 +42,16 @@ class ForgotPasswordScreen extends StatelessWidget {
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: isLoading ? null : cubit.goPreviousStep,
+              onPressed:
+                  isLoading
+                      ? null
+                      : () {
+                        if (cubit.currentStep == 0) {
+                          Navigator.pop(context);
+                        } else {
+                          cubit.goPreviousStep();
+                        }
+                      },
             ),
           ),
           body: Stack(

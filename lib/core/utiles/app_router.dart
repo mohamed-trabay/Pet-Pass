@@ -1,4 +1,8 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pet_pass/core/utiles/service_locator.dart';
+import 'package:pet_pass/features/auth/data/repo/auth_repo.dart';
+import 'package:pet_pass/features/auth/presentation/manger/forgot_password_cubit/forgot_password_cubit.dart';
 import 'package:pet_pass/features/auth/presentation/views/forget_password_view.dart';
 import 'package:pet_pass/features/auth/presentation/views/sign_in_view.dart';
 import 'package:pet_pass/features/auth/presentation/views/sign_up_view.dart';
@@ -92,15 +96,26 @@ abstract class AppRouter {
       //     return PaymentPage(amount: amount, orderId: orderId, iframeUrl: '');
       //   },
       // ),
-      GoRoute(path: ksignInView, builder: (context, state) => LoginScreen()),
-      GoRoute(path: ksignUpView, builder: (context, state) => SignUpScreen()),
+      GoRoute(
+        path: ksignInView,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: ksignUpView,
+        builder: (context, state) => const SignUpScreen(),
+      ),
       GoRoute(
         path: kPaymentsView,
         builder: (context, state) => const PremiumView(),
       ),
       GoRoute(
         path: kForgetPassword,
-        builder: (context, state) => const ForgotPasswordScreen(),
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => ForgotPasswordCubit(getIt<AuthRepo>()),
+
+              child: const ForgotPasswordScreen(),
+            ),
       ),
     ],
   );

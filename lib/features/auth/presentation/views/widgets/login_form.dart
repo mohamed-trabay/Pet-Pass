@@ -10,23 +10,44 @@ import 'package:pet_pass/features/auth/presentation/manger/auth_cubit/auth_cubit
 import 'package:pet_pass/features/auth/presentation/views/widgets/auth_text_field.dart';
 import 'package:pet_pass/features/home/presentation/viwes/widgets/custom_buttom.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
-    final formKey = GlobalKey<FormState>();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
     final isLoading = context.watch<AuthCubit>().state is AuthLoading;
 
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         children: [
           AuthTextField(
-            controller: emailController,
+            controller: _emailController,
             hintText: lang.email,
             icon: Icons.email_outlined,
             onChanged: (_) {},
@@ -46,7 +67,7 @@ class LoginForm extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           AuthTextField(
-            controller: passwordController,
+            controller: _passwordController,
             hintText: lang.password,
             icon: Icons.lock_outline,
             onChanged: (_) {},
@@ -89,10 +110,10 @@ class LoginForm extends StatelessWidget {
                 isLoading
                     ? null
                     : () {
-                      if (formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         context.read<AuthCubit>().login(
-                          username: emailController.text.trim(),
-                          password: passwordController.text.trim(),
+                          username: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
                         );
                       }
                     },

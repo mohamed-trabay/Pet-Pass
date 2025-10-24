@@ -2,31 +2,54 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
-
 import 'package:pet_pass/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
 import 'package:pet_pass/features/auth/presentation/views/widgets/auth_text_field.dart';
 import 'package:pet_pass/features/home/presentation/viwes/widgets/custom_buttom.dart';
 
-class SignUpForm extends StatelessWidget {
+class SignUpForm extends StatefulWidget {
   const SignUpForm({super.key});
+
+  @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  late final GlobalKey<FormState> _formKey;
+  late final TextEditingController _usernameController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _confirmPasswordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _formKey = GlobalKey<FormState>();
+    _usernameController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final lang = AppLocalizations.of(context)!;
-    final formKey = GlobalKey<FormState>();
-    final usernameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-
     final isLoading = context.watch<AuthCubit>().state is AuthLoading;
 
     return Form(
-      key: formKey,
+      key: _formKey,
       child: Column(
         children: [
           AuthTextField(
-            controller: usernameController,
+            controller: _usernameController,
             hintText: 'username',
             icon: Icons.person_outline,
             onChanged: (_) {},
@@ -42,7 +65,7 @@ class SignUpForm extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           AuthTextField(
-            controller: emailController,
+            controller: _emailController,
             hintText: lang.email,
             icon: Icons.email_outlined,
             onChanged: (_) {},
@@ -62,7 +85,7 @@ class SignUpForm extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           AuthTextField(
-            controller: passwordController,
+            controller: _passwordController,
             hintText: lang.password,
             icon: Icons.lock_outline,
             onChanged: (_) {},
@@ -81,7 +104,7 @@ class SignUpForm extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           AuthTextField(
-            controller: confirmPasswordController,
+            controller: _confirmPasswordController,
             hintText: lang.confirmPassword,
             icon: Icons.lock_reset_outlined,
             onChanged: (_) {},
@@ -92,7 +115,7 @@ class SignUpForm extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return lang.pleaseConfirmPassword;
               }
-              if (value != passwordController.text) {
+              if (value != _passwordController.text) {
                 return lang.passwordsDoNotMatch;
               }
               return null;
@@ -107,11 +130,11 @@ class SignUpForm extends StatelessWidget {
                 isLoading
                     ? null
                     : () {
-                      if (formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         context.read<AuthCubit>().register(
-                          username: usernameController.text.trim(),
-                          email: emailController.text.trim(),
-                          password: passwordController.text.trim(),
+                          username: _usernameController.text.trim(),
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
                         );
                       }
                     },

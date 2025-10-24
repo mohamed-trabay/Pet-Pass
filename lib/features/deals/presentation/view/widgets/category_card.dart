@@ -43,6 +43,7 @@ class CategoryCardContainer extends StatelessWidget {
               ],
             ),
             child: Html(
+              key: ValueKey('category_${categoryModel.id}'),
               data: categoryModel.name,
               style: {
                 'body': Style(
