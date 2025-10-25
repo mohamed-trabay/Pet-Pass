@@ -30,11 +30,18 @@ class DealsRepoImpl implements DealsRepo {
 
   @override
   Future<Either<Failure, List<OfferModel>>> fetchProductsByCategory(
-    int categoryId,
-  ) async {
+    int categoryId, {
+    int page = 1,
+    int perPage = 6,
+  }) async {
     try {
       var data = await apiService.get(
-        endpoint: 'products?category=$categoryId',
+        endpoint: 'products',
+        queryParams: {
+          'category': categoryId,
+          'page': page,
+          'per_page': perPage,
+        },
       );
 
       List<OfferModel> products = [];
@@ -52,11 +59,14 @@ class DealsRepoImpl implements DealsRepo {
   }
 
   @override
-  Future<Either<Failure, List<OfferModel>>> fetchAllProducts() async {
+  Future<Either<Failure, List<OfferModel>>> fetchAllProducts({
+    int page = 1,
+    int perPage = 6,
+  }) async {
     try {
       var data = await apiService.get(
         endpoint: 'products',
-        queryParams: {'per_page': 20},
+        queryParams: {'page': page, 'per_page': perPage},
       );
 
       List<OfferModel> products = [];

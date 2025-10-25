@@ -273,7 +273,6 @@ class AuthService {
   }
 
   // ===== UPDATE USER ROLE =====
-  // ===== UPDATE USER ROLE =====
   Future<Map<String, dynamic>> updateUserRole({
     required String userId,
     required String role,
@@ -285,10 +284,7 @@ class AuthService {
           'roles': [role],
         },
         options: Options(
-          headers: {
-            'Authorization':
-                'Bearer ${ApiKeys.adminToken}', // ← استخدم admin token
-          },
+          headers: {'Authorization': 'Bearer ${ApiKeys.adminToken}'},
         ),
       );
 

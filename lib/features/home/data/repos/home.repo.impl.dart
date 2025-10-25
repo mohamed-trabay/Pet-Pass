@@ -15,7 +15,7 @@ class HomeRepoImpl implements HomeRepo {
     try {
       var data = await apiService.get(
         endpoint: 'products',
-        queryParams: {'per_page': 10},
+        queryParams: {'per_page': 6},
       );
 
       List<OfferModel> products =

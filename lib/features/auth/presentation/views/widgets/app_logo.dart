@@ -12,8 +12,8 @@ class AppLogo extends StatelessWidget {
         Theme.of(context).brightness == Brightness.dark
             ? AssetsData.darklogo
             : AssetsData.logo,
-        width: 200.w,
-        height: 200.h,
+        width: 220.w,
+        height: 220.h,
         fit: BoxFit.contain,
       ),
     );

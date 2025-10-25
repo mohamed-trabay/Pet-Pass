@@ -45,7 +45,6 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     result.fold((error) => emit(AuthFailure(error)), (data) async {
-      // بعد نجاح التسجيل، emit AuthSuccess ثم اجلب الـ Profile
       emit(AuthSuccess(data));
 
       final profileResult = await _authRepo.getUserProfile();

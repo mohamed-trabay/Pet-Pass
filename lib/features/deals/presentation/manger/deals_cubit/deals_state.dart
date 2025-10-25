@@ -1,30 +1,40 @@
 part of 'deals_cubit.dart';
 
-sealed class DealsState extends Equatable {
+abstract class DealsState extends Equatable {
   const DealsState();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
-final class DealsInitial extends DealsState {}
+class DealsInitial extends DealsState {}
 
-final class FilteredProductsLoading extends DealsState {}
+class FilteredProductsLoading extends DealsState {}
 
-final class FilteredProductsFailure extends DealsState {
+class FilteredProductsSuccess extends DealsState {
+  final List<OfferModel> products;
+  final bool hasMore;
+
+  const FilteredProductsSuccess(this.products, {this.hasMore = true});
+
+  @override
+  List<Object?> get props => [products, hasMore];
+}
+
+class FilteredProductsFailure extends DealsState {
   final String errMessage;
 
   const FilteredProductsFailure(this.errMessage);
 
   @override
-  List<Object> get props => [errMessage];
+  List<Object?> get props => [errMessage];
 }
 
-final class FilteredProductsSuccess extends DealsState {
-  final List<OfferModel> products;
+class FilteredProductsLoadingMore extends DealsState {
+  final List<OfferModel> currentProducts;
 
-  const FilteredProductsSuccess(this.products);
+  const FilteredProductsLoadingMore(this.currentProducts);
 
   @override
-  List<Object> get props => [products];
+  List<Object?> get props => [currentProducts];
 }

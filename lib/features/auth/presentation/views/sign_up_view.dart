@@ -1,4 +1,5 @@
-import 'package:flutter/gestures.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Column(
                     children: [
-                      SizedBox(height: 60.h),
+                      SizedBox(height: 40.h),
                       const AppLogo(),
                       SizedBox(height: 15.h),
                       Text(
@@ -76,31 +77,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(height: 40.h),
                       const SignUpForm(),
                       SizedBox(height: 30.h),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: lang.alreadyHaveAnAccount,
-                              style: Styles.textStyle12.copyWith(
-                                color: AppColors.greyprimmary,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            lang.alreadyHaveAnAccount,
+                            style: Styles.textStyle12.copyWith(
+                              color: AppColors.greyprimmary,
                             ),
-                            TextSpan(
-                              text: ' ${lang.signIn}',
+                          ),
+
+                          TextButton(
+                            onPressed:
+                                isLoading
+                                    ? null
+                                    : () => Navigator.of(context).pop(),
+                            child: Text(
+                              lang.signIn,
                               style: Styles.textStyle12.copyWith(
                                 color: AppColors.corePrimary,
-                                fontWeight: FontWeight.bold,
                               ),
-                              recognizer:
-                                  TapGestureRecognizer()
-                                    ..onTap = () {
-                                      if (!isLoading) {
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 40.h),
                     ],

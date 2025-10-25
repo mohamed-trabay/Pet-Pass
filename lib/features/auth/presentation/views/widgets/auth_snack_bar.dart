@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pet_pass/core/utiles/app_colors.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 
 void showSnackbar(
   BuildContext context,
@@ -9,76 +10,75 @@ void showSnackbar(
   bool isError = false,
 }) {
   final hasHtml = message.contains('<') && message.contains('>');
-
-  if (hasHtml) {
-    _showHtmlSnackbar(context, message, isError: isError);
-  } else {
-    _showTextSnackbar(context, message, isError: isError);
-  }
+  _showCustomSnackbar(context, message, isError: isError, isHtml: hasHtml);
 }
 
-void _showHtmlSnackbar(
+void _showCustomSnackbar(
   BuildContext context,
-  String htmlMessage, {
+  String message, {
   required bool isError,
+  required bool isHtml,
 }) {
   showTopSnackBar(
     Overlay.of(context),
     Material(
       color: Colors.transparent,
       child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 16.w),
         decoration: BoxDecoration(
-          color: isError ? Colors.redAccent : Colors.green,
-          borderRadius: BorderRadius.circular(12),
+          color: isError ? AppColors.error : AppColors.corePrimary,
+          borderRadius: BorderRadius.circular(16.r),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, 4),
+            ),
+          ],
         ),
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(20.r),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              isError ? Icons.error : Icons.check_circle,
+              isError ? Icons.error : Icons.task_alt,
               color: Colors.white,
-              size: 28,
+              size: 36.sp,
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Html(
-                key: UniqueKey(),
-                data: htmlMessage,
-                style: {
-                  'body': Style(
-                    margin: Margins.zero,
-                    padding: HtmlPaddings.zero,
+            SizedBox(width: 10.w),
+            if (isHtml)
+              Flexible(
+                child: Html(
+                  key: UniqueKey(),
+                  data: message,
+                  style: {
+                    'body': Style(
+                      margin: Margins.zero,
+                      padding: HtmlPaddings.zero,
+                      color: Colors.white,
+                      fontSize: FontSize(15.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  },
+                ),
+              )
+            else
+              Flexible(
+                child: Text(
+                  message,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: FontSize(14),
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
                   ),
-                  'p': Style(margin: Margins.zero, padding: HtmlPaddings.zero),
-                },
+                ),
               ),
-            ),
           ],
         ),
       ),
     ),
-  );
-}
-
-void _showTextSnackbar(
-  BuildContext context,
-  String message, {
-  required bool isError,
-}) {
-  showTopSnackBar(
-    Overlay.of(context),
-    isError
-        ? CustomSnackBar.error(
-          message: message,
-          backgroundColor: Colors.redAccent,
-          icon: const Icon(Icons.error, color: Colors.white, size: 28),
-        )
-        : CustomSnackBar.success(
-          message: message,
-          backgroundColor: Colors.green,
-          icon: const Icon(Icons.check_circle, color: Colors.white, size: 28),
-        ),
+    animationDuration: const Duration(milliseconds: 600),
+    displayDuration: const Duration(seconds: 2),
   );
 }

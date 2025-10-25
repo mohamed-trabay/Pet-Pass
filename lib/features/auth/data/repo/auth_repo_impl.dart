@@ -150,7 +150,6 @@ class AuthRepoImpl implements AuthRepo {
     try {
       await _authService.logout();
     } catch (e) {
-      // حتى لو حصل خطأ، امسح البيانات
       await _authService.logout();
     }
   }

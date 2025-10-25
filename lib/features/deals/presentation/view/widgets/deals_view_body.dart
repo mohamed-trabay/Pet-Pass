@@ -10,30 +10,67 @@ class DealsViewBody extends StatelessWidget {
   const DealsViewBody({super.key});
 
   Future<void> _onRefresh(BuildContext context) async {
-    context.read<DealsCubit>().fetchAllProducts();
+    await context.read<DealsCubit>().fetchAllProducts();
+  }
+
+  bool _onScrollNotification(
+    ScrollNotification notification,
+    BuildContext context,
+  ) {
+    if (notification is ScrollUpdateNotification) {
+      final metrics = notification.metrics;
+
+      if (metrics.pixels >= metrics.maxScrollExtent * 0.8) {
+        final cubit = context.read<DealsCubit>();
+        final state = cubit.state;
+
+        // Prevent multiple calls
+        if (state is FilteredProductsLoadingMore) return false;
+
+        if (state is FilteredProductsSuccess && state.hasMore) {
+          if (cubit.selectedCategoryId == null) {
+            cubit.fetchAllProducts(loadMore: true);
+          } else {
+            cubit.fetchProductsByCategory(
+              cubit.selectedCategoryId!,
+              loadMore: true,
+            );
+          }
+        }
+      }
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => _onRefresh(context),
-      child: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          const SliverToBoxAdapter(child: DealsAppBar()),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.all(18.0.r),
-              child: Column(
-                children: [
-                  const CategoryList(),
-                  SizedBox(height: 20.h),
-                  const DealsList(),
-                ],
+      child: NotificationListener<ScrollNotification>(
+        onNotification:
+            (notification) => _onScrollNotification(notification, context),
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            const SliverToBoxAdapter(child: DealsAppBar()),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18.0.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 18.h),
+                    const CategoryList(),
+                    SizedBox(height: 20.h),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 18.0.w),
+              sliver: const DealsList(),
+            ),
+          ],
+        ),
       ),
     );
   }

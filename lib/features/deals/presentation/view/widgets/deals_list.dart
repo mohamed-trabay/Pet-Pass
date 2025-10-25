@@ -13,53 +13,102 @@ class DealsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DealsCubit, DealsState>(
       builder: (context, state) {
-        if (state is FilteredProductsSuccess) {
-          if (state.products.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.w),
-                child: Text(
-                  'No products found',
-                  style: TextStyle(fontSize: 16.sp),
+        if (state is FilteredProductsLoading) {
+          return SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => const CustomLoadingIndicator(),
+              childCount: 6,
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16.h,
+              crossAxisSpacing: 17.w,
+              childAspectRatio: 2.8.w / 4.h,
+            ),
+          );
+        }
+
+        if (state is FilteredProductsSuccess ||
+            state is FilteredProductsLoadingMore) {
+          final products =
+              state is FilteredProductsSuccess
+                  ? state.products
+                  : (state as FilteredProductsLoadingMore).currentProducts;
+
+          final hasMore =
+              state is FilteredProductsSuccess ? state.hasMore : true;
+
+          if (products.isEmpty) {
+            return SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.w),
+                  child: Text(
+                    'No products found',
+                    style: TextStyle(fontSize: 16.sp),
+                  ),
                 ),
               ),
             );
           }
 
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: state.products.length,
-            itemBuilder: (context, index) {
-              return CustomItem(productModel: state.products[index]);
-            },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16.h,
-              crossAxisSpacing: 17.w,
-              childAspectRatio: 2.8.w / 4.h,
-            ),
+          return SliverMainAxisGroup(
+            slivers: [
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return CustomItem(productModel: products[index]);
+                }, childCount: products.length),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16.h,
+                  crossAxisSpacing: 17.w,
+                  childAspectRatio: 2.8.w / 4.h,
+                ),
+              ),
+
+              // Loading indicator أثناء تحميل المزيد
+              if (state is FilteredProductsLoadingMore)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16.h, bottom: 8.h),
+                    child: Center(
+                      child: SizedBox(
+                        height: 40.h,
+                        width: double.infinity,
+                        child: const CustomLoadingIndicator(),
+                      ),
+                    ),
+                  ),
+                ),
+
+              // رسالة "No more products"
+              if (state is FilteredProductsSuccess &&
+                  !hasMore &&
+                  products.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Center(
+                      child: Text(
+                        'No more products',
+                        style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           );
-        } else if (state is FilteredProductsFailure) {
-          return CustomErrorWidget(errMessage: state.errMessage);
-        } else if (state is FilteredProductsLoading) {
-          return GridView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              return const CustomLoadingIndicator();
-            },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16.h,
-              crossAxisSpacing: 17.w,
-              childAspectRatio: 2.8.w / 4.h,
-            ),
-          );
-        } else {
-          return const SizedBox.shrink();
         }
+
+        if (state is FilteredProductsFailure) {
+          return SliverFillRemaining(
+            hasScrollBody: false,
+            child: CustomErrorWidget(errMessage: state.errMessage),
+          );
+        }
+
+        return const SliverToBoxAdapter(child: SizedBox.shrink());
       },
     );
   }

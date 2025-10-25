@@ -1,4 +1,5 @@
-import 'package:flutter/gestures.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Column(
                     children: [
-                      SizedBox(height: 60.h),
+                      SizedBox(height: 40.h),
                       const AppLogo(),
                       SizedBox(height: 15.h),
                       Text(
@@ -76,32 +77,33 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 40.h),
                       const LoginForm(),
                       SizedBox(height: 30.h),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: lang.dontHaveAnAccount,
-                              style: Styles.textStyle12.copyWith(
-                                color: AppColors.greyprimmary,
-                              ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            lang.dontHaveAnAccount,
+                            style: Styles.textStyle12.copyWith(
+                              color: AppColors.greyprimmary,
                             ),
-                            TextSpan(
-                              text: ' ${lang.signUp}',
+                          ),
+
+                          TextButton(
+                            onPressed:
+                                isLoading
+                                    ? null
+                                    : () => GoRouter.of(
+                                      context,
+                                    ).push(AppRouter.ksignUpView),
+                            child: Text(
+                              lang.signUp,
                               style: Styles.textStyle12.copyWith(
                                 color: AppColors.corePrimary,
-                                fontWeight: FontWeight.bold,
                               ),
-                              recognizer:
-                                  TapGestureRecognizer()
-                                    ..onTap = () {
-                                      if (!isLoading) {
-                                        context.push(AppRouter.ksignUpView);
-                                      }
-                                    },
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+
                       SizedBox(height: 40.h),
                     ],
                   ),

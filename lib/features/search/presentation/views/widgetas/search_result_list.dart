@@ -16,6 +16,7 @@ class SearchResultListView extends StatelessWidget {
       listener: (context, state) {
         context.read<LanguageCubit>().stream.listen((langState) {
           if (langState is LanguageChanged) {
+            // ignore: use_build_context_synchronously
             context.read<SearchCubit>();
           }
         });
