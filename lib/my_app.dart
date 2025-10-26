@@ -4,12 +4,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
 import 'package:pet_pass/core/localization/language_cubit/language_cubit.dart';
+import 'package:pet_pass/core/services/cloudinary_service.dart';
 import 'package:pet_pass/core/theme/app_theme.dart';
 import 'package:pet_pass/core/theme/theme_cubit/theme_cubit.dart';
 import 'package:pet_pass/core/utiles/app_router.dart';
 import 'package:pet_pass/core/utiles/service_locator.dart';
 import 'package:pet_pass/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
 import 'package:pet_pass/features/fav/presentation/manger/fav_cubit/fav_cubit.dart';
+import 'package:pet_pass/features/profiel/presentation/manger/profiel_image_cubit/profiel_image_cubit.dart';
 
 class PetPass extends StatelessWidget {
   const PetPass({super.key});
@@ -20,6 +22,13 @@ class PetPass extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => getIt<AuthCubit>()..checkLoginStatus(),
+        ),
+        BlocProvider(
+          create:
+              (context) => ProfielImageCubit(
+                cloudinaryService: getIt<CloudinaryAvatarService>(),
+                authCubit: context.read<AuthCubit>(),
+              ),
         ),
 
         BlocProvider(create: (context) => ThemeCubit()..loadTheme()),

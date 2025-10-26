@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pet_pass/core/services/api_service.dart';
 import 'package:pet_pass/core/services/auth_service.dart';
+import 'package:pet_pass/core/services/cloudinary_service.dart';
 import 'package:pet_pass/features/auth/data/repo/auth_repo.dart';
 import 'package:pet_pass/features/auth/data/repo/auth_repo_impl.dart';
 import 'package:pet_pass/features/auth/presentation/manger/auth_cubit/auth_cubit.dart';
@@ -53,6 +54,9 @@ void setupServiceLocator() {
   // ===== Deals Repo =====
   getIt.registerSingleton<DealsRepoImpl>(
     DealsRepoImpl(apiService: getIt<ApiService>()),
+  );
+  getIt.registerLazySingleton<CloudinaryAvatarService>(
+    () => CloudinaryAvatarService(getIt<Dio>()),
   );
 
   // ===== Search Repo =====

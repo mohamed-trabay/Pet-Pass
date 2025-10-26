@@ -11,6 +11,7 @@ dependencies:
   badges: ^3.1.2
   cached_network_image: ^3.4.1
   carousel_slider: ^5.1.1
+  cloudinary_public: ^0.23.1
   connectivity_plus: ^7.0.0
   cupertino_icons: ^1.0.8
   dartz: ^0.10.1

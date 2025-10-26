@@ -1,3 +1,4 @@
+// lib/core/services/local_storage_service.dart
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,6 +130,37 @@ class LocalStorageService {
       await saveUserInfo(userInfo);
     } catch (e) {
       debugPrint('Error updating user info: $e');
+    }
+  }
+
+  // ===================== AVATAR =====================
+
+  static Future<void> saveAvatarUrl(String userId, String avatarUrl) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('avatar_url_$userId', avatarUrl);
+    } catch (e) {
+      debugPrint('Error saving avatar URL: $e');
+    }
+  }
+
+  static Future<String?> getAvatarUrl(String userId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      return prefs.getString('avatar_url_$userId');
+    } catch (e) {
+      debugPrint('Error getting avatar URL: $e');
+      return null;
+    }
+  }
+
+  static Future<void> clearAvatarUrl(String userId) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('avatar_url_$userId');
+      await prefs.remove('avatar_public_id_$userId');
+    } catch (e) {
+      debugPrint('Error clearing avatar URL: $e');
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pet_pass/core/localization/app_localizations.dart';
 import 'package:pet_pass/core/widgets/center_title.dart';
-import 'package:pet_pass/core/widgets/custom_text_field.dart';
 import 'package:pet_pass/features/fav/presentation/views/widgets/fav_list.dart';
 
 class FavViewBody extends StatelessWidget {
@@ -19,10 +18,8 @@ class FavViewBody extends StatelessWidget {
         child: Column(
           children: [
             CenteredTitle(title: lang.fav),
-            SizedBox(height: 19.h),
-            const CustomTextField(),
+            SizedBox(height: 30.h),
 
-            SizedBox(height: 16.h),
             const FavList(),
           ],
         ),
